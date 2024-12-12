@@ -18,7 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.ParameterizedMessage;
 import org.elasticsearch.SpecialPermission;
-import org.elasticsearch.common.collect.Tuple;
+import org.elasticsearch.core.Tuple;
 import org.elasticsearch.core.internal.io.IOUtils;
 
 import java.io.BufferedReader;
@@ -172,7 +172,8 @@ public class RemoteMonitor implements Runnable {
                     }
 
                     // 切分
-                    String[] param = line.split(SPLITTER);
+                    // TODO: business modification: dic中仅有词，无词性等信息，不做切分
+                    String[] param = new String[]{line};
                     String word = param[0];
 
                     // 排除空行

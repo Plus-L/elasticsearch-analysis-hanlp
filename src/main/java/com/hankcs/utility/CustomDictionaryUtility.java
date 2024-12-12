@@ -35,19 +35,20 @@ public class CustomDictionaryUtility {
     private static final Logger logger = LogManager.getLogger(CustomDictionaryUtility.class);
 
     public static boolean reload() {
-        logger.debug("hanlp custom dictionary model size before reload: {}", CustomDictionary.dat.getSize());
+        logger.debug("hanlp custom dictionary model size before reload: {}", CustomDictionary.DEFAULT.dat.getSize());
         String[] paths = HanLP.Config.CustomDictionaryPath;
         if (paths == null || paths.length == 0) {
             return false;
         }
         logger.debug("begin delete hanlp custom dictionary cache");
+        // TODO: 自定义词典读取逻辑更改适配ES新政策
         IOUtil.deleteFile(paths[0] + Predefine.BIN_EXT);
         logger.debug("delete hanlp custom dictionary cache successfully");
         return loadMainDictionary(paths[0]);
     }
 
     private static boolean loadMainDictionary(String mainPath) {
-        CustomDictionary.dat = new DoubleArrayTrie<>();
+        CustomDictionary.DEFAULT.dat = new DoubleArrayTrie<>();
         TreeMap<String, CoreDictionary.Attribute> map = new TreeMap<>();
         LinkedHashSet<Nature> customNatureCollector = new LinkedHashSet<>();
         try {
@@ -78,7 +79,7 @@ public class CustomDictionaryUtility {
                 map.put(Predefine.TAG_OTHER, null);
             }
             logger.debug("hanlp begin build double array trie");
-            CustomDictionary.dat.build(map);
+            CustomDictionary.DEFAULT.dat.build(map);
             // 缓存成dat文件，下次加载会快很多
             logger.debug("hanlp converting custom dictionary cache to dat file");
             // 缓存值文件
@@ -95,9 +96,9 @@ public class CustomDictionaryUtility {
                 attribute.save(out);
             }
             logger.debug("hanlp traverse custom words to write into file successfully");
-            CustomDictionary.dat.save(out);
+            CustomDictionary.DEFAULT.dat.save(out);
             out.close();
-            logger.debug("hanlp custom dictionary model size after reload: {}", CustomDictionary.dat.getSize());
+            logger.debug("hanlp custom dictionary model size after reload: {}", CustomDictionary.DEFAULT.dat.getSize());
         } catch (FileNotFoundException e) {
             logger.error(() -> new ParameterizedMessage("hanlp custom dictionary main path [{}] is not exist", mainPath), e);
             return false;
@@ -126,6 +127,7 @@ public class CustomDictionaryUtility {
             if (path.endsWith(".csv")) {
                 splitter = ",";
             }
+            // TODO: 自定义词库读取逻辑修改 / 删除本地话自定义词库使用远程词库
             BufferedReader br = new BufferedReader(new InputStreamReader(IOUtil.newInputStream(path), StandardCharsets.UTF_8));
             String line;
             boolean firstLine = true;

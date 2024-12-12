@@ -6,6 +6,15 @@ HanLP Analyzer for ElasticSearch
 [![GitHub release](https://img.shields.io/github/release/KennFalcon/elasticsearch-analysis-hanlp.svg)](https://github.com/KennFalcon/elasticsearch-analysis-hanlp/releases)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
+## 写在最前
+这个Fork为Hanlp ElasticSearch分词器的 7.17.4 版本，主要更改：
+1. 适配ES版本7.17.4
+2. 升级hanlp版本至1.8.5
+3. 去除本地自定义词典相关读写删逻辑
+4. permission修改适配ES7.11后新政策
+5. 业务修改（仅本人使用）
+
+
 此分词器基于[HanLP](http://www.hankcs.com/nlp)，提供了HanLP中大部分的分词方式。
 
 今年一年都在忙其他事，所以插件更新基本一年没有更新，年底更新一波。今年学习了一下ES向量插件（亚马逊设计的那个方式还挺有意思的，重新设计向量索引文件，但文件管理依托于lucene），搞了搞知识图谱（JanusGraph），最近又在弄ES存储计算分离（基于共享存储）

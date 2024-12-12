@@ -74,6 +74,7 @@ public class DictionaryFileCache {
             try {
                 logger.info("begin write down HanLP custom dictionary file cache, file path: {}, custom dictionary file list: {}",
                         cachePath.toFile().getAbsolutePath(), Arrays.toString(customDictionaryFileList.toArray()));
+                // TODO: 自定义词典读取逻辑更改适配ES新政策
                 out = new DataOutputStream(new FileOutputStream(cachePath.toFile()));
                 out.writeInt(customDictionaryFileList.size());
                 for (DictionaryFile dictionaryFile : customDictionaryFileList) {
@@ -81,7 +82,7 @@ public class DictionaryFileCache {
                 }
                 logger.info("write down HanLP custom dictionary file cache successfully");
             } catch (IOException e) {
-                logger.debug("can not write down HanLP custom dictionary file cache", e);
+                logger.error("can not write down HanLP custom dictionary file cache", e);
             } finally {
                 IOUtils.closeWhileHandlingException(out);
             }

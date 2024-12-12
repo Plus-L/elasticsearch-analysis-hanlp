@@ -1,7 +1,6 @@
 package com.hankcs.dic;
 
 import com.hankcs.cfg.Configuration;
-import com.hankcs.dic.cache.DictionaryFileCache;
 import com.hankcs.dic.config.RemoteDictConfig;
 import org.elasticsearch.plugin.analysis.hanlp.AnalysisHanLPPlugin;
 
@@ -47,8 +46,9 @@ public class Dictionary {
 
     private void setUp() {
         Path configDir = configuration.getEnvironment().configFile().resolve(AnalysisHanLPPlugin.PLUGIN_NAME);
-        DictionaryFileCache.configCachePath(configuration);
-        DictionaryFileCache.loadCache();
+        // TODO: 关闭原插件中的读写custom dic逻辑
+//        DictionaryFileCache.configCachePath(configuration);
+//        DictionaryFileCache.loadCache();
         RemoteDictConfig.initial(configDir.resolve(REMOTE_CONFIG_FILE_NAME).toString());
     }
 
@@ -58,7 +58,8 @@ public class Dictionary {
                 if (singleton == null) {
                     singleton = new Dictionary(configuration);
                     singleton.setUp();
-                    pool.scheduleAtFixedRate(new ExtMonitor(), 10, 60, TimeUnit.SECONDS);
+                    // TODO: 关闭原插件中的读写custom dic逻辑
+//                    pool.scheduleAtFixedRate(new ExtMonitor(), 10, 60, TimeUnit.SECONDS);
                     if (configuration.isEnableRemoteDict()) {
                         for (String location : RemoteDictConfig.getSingleton().getRemoteExtDictionaries()) {
                             pool.scheduleAtFixedRate(new RemoteMonitor(location, "custom"), 10, 60, TimeUnit.SECONDS);

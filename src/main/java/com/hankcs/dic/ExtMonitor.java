@@ -60,6 +60,7 @@ public class ExtMonitor implements Runnable {
                 logger.error("can not reload hanlp custom dictionary", e);
             }
             DictionaryFileCache.setCustomDictionaryFileList(currentDictionaryFileList);
+            // TODO: 自定义词典读取逻辑更改适配ES新政策
             DictionaryFileCache.writeCache();
             logger.info("finish reload hanlp custom dictionary");
         } else {
